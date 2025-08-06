@@ -1,6 +1,6 @@
 import App from "./components/App/App";
 // import { createRoot } from "react-dom/client";
-import React from "react";
+// import React from "react";
 import "modern-normalize";
 import ReactDOM from "react-dom/client";
 import "./global.css";
