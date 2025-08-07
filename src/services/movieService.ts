@@ -1,8 +1,22 @@
 import axios from "axios";
-import type { MovieSearchResponse } from "../types/movie";
 import { useQuery } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { useEffect } from "react";
+
+interface MovieSearchResponse {
+  results: Movie[];
+  total_pages: number;
+}
+
+interface Movie {
+  id: number;
+  poster_path: string;
+  backdrop_path: string;
+  title: string;
+  overview: string;
+  release_date: string;
+  vote_average: number;
+}
 
 export async function fetchMovies(
   query: string,
