@@ -1,7 +1,5 @@
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
-import toast from "react-hot-toast";
-import { useEffect } from "react";
 
 interface MovieSearchResponse {
   results: Movie[];
@@ -37,17 +35,13 @@ export async function fetchMovies(
   return response.data;
 }
 export function useMovies(query: string, page: number) {
-  const result = useQuery<MovieSearchResponse, Error>({
+  return useQuery<MovieSearchResponse, Error>({
     queryKey: ["movies", query, page],
     queryFn: () => fetchMovies(query, page),
     enabled: query.trim() !== "",
+    placeholderData: {
+      results: [],
+      total_pages: 0,
+    },
   });
-
-  useEffect(() => {
-    if (result.data?.results.length === 0) {
-      toast.error("No movies found for your request.");
-    }
-  }, [result.data]);
-
-  return result;
 }
