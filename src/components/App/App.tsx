@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import SearchBar from "../SearchBar/SearchBar";
 import MovieGrid from "../MovieGrid/MovieGrid";
@@ -35,11 +35,26 @@ export default function App() {
   function handleCloseModal() {
     setSelectedMovie(null);
   }
+
+  const toastShownRef = useRef(false);
+
   useEffect(() => {
-    if (data && !isLoading && !isError && data.results.length === 0) {
+    if (
+      query.trim() !== "" &&
+      data?.results?.length === 0 &&
+      !isLoading &&
+      !isError &&
+      !toastShownRef.current
+    ) {
       toast.error("No movies found for your request.");
+      toastShownRef.current = true;
     }
-  }, [data, isLoading, isError]);
+
+    if (isLoading || isError || (data?.results?.length ?? 0) > 0) {
+      toastShownRef.current = false;
+    }
+  }, [data, isLoading, isError, query]);
+
   return (
     <div>
       <SearchBar onSubmit={handleSearch} />
